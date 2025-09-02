@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import Button from './Button';
 
 interface ModalProps {
   isModalOpen: boolean;
@@ -15,12 +16,9 @@ function Modal({ isModalOpen, closeModal, title, children }: ModalProps) {
       <div className="modal-overlay fixed inset-0 bg-black opacity-50" />
       <div className="modal-container fixed inset-0 z-20 flex items-center justify-center">
         <div className="modal-body relative flex flex-col gap-4 rounded-xl bg-white p-6">
-          <button
-            className="absolute top-2 right-2 h-[1.8rem] w-[1.8rem] cursor-pointer rounded-full bg-black text-sm text-white hover:opacity-70"
-            onClick={closeModal}
-          >
+          <Button className="absolute top-4 right-4" onClick={closeModal}>
             X
-          </button>
+          </Button>
           <h2 className="text-xl font-bold">{title}</h2>
           <div>{children}</div>
         </div>
