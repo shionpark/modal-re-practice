@@ -2,43 +2,61 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import Button from './Button';
 
 interface ModalLayerProps {
-  isModalOpen: boolean;
-  closeModal: () => void;
   title: string;
   children: ReactNode;
+  isModalOpen: boolean;
+  closeHandler: () => void;
+  keyboardHandler: (e: React.KeyboardEvent) => void;
 }
 
 function ModalLayer({
-  isModalOpen,
-  closeModal,
   title,
   children,
+  isModalOpen,
+  closeHandler,
+  keyboardHandler,
 }: ModalLayerProps) {
-  const modalRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (!isModalOpen) return;
+
+    const id = requestAnimationFrame(() => containerRef.current?.focus());
+    return () => cancelAnimationFrame(id);
+  }, [isModalOpen, containerRef]);
+
+  const bodyRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!isModalOpen) return;
+
     const handleClick = (e: MouseEvent) => {
-      if (modalRef.current && !modalRef.current?.contains(e.target as Node)) {
-        closeModal();
+      if (bodyRef.current && !bodyRef.current?.contains(e.target as Node)) {
+        closeHandler();
       }
     };
     document.addEventListener('mousedown', handleClick);
     return () => {
       document.removeEventListener('mousedown', handleClick);
     };
-  }, [closeModal]);
+  }, [isModalOpen, closeHandler]);
 
   if (!isModalOpen) return;
 
   return (
     <>
       <div className="modal-background fixed inset-0 bg-black opacity-50" />
-      <div className="modal-content fixed inset-0 z-20 flex items-center justify-center">
+      <div
+        ref={containerRef}
+        tabIndex={-1}
+        className="modal-container fixed inset-0 z-20 flex items-center justify-center"
+        onKeyDown={keyboardHandler}
+      >
         <section
-          ref={modalRef}
-          className="relative flex flex-col gap-4 rounded-xl bg-white p-6"
+          ref={bodyRef}
+          className="modal-body relative flex flex-col gap-4 rounded-xl bg-white p-6"
         >
-          <Button className="absolute top-4 right-4" onClick={closeModal}>
+          <Button className="absolute top-4 right-4" onClick={closeHandler}>
             X
           </Button>
           <h2 className="text-xl font-bold">{title}</h2>

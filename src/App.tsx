@@ -12,12 +12,13 @@ function App() {
 
       <Alerts
         isOpen={isOpen}
+        closeModal={closeModal}
         onConfirm={() => {
           confirm('동의하였습니다.');
           closeModal();
         }}
         onCancel={() => {
-          confirm('거부하였습니다.');
+          confirm('창을 닫으시겠습니까?');
           closeModal();
         }}
       />
