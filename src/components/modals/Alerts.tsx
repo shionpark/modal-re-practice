@@ -1,36 +1,20 @@
-import { Button, Modal } from '@components/commons';
+import { Button, ModalOverlay } from '@components/commons';
 
-function Alerts({
-  isOpen,
-  closeModal,
-}: {
+interface AlertsProps {
   isOpen: boolean;
-  closeModal: () => void;
-}) {
+  onConfirm: () => void;
+  onCancel: () => void;
+}
+
+function Alerts({ isOpen, onConfirm, onCancel }: AlertsProps) {
   return (
-    <>
-      <Modal isModalOpen={isOpen} closeModal={closeModal} title="Alerts!">
-        <p className="mb-4">정보 제공에 동의하십니까?</p>
-        <div className="flex justify-between">
-          <Button
-            onClick={() => {
-              confirm('동의하였습니다.');
-              closeModal();
-            }}
-          >
-            예
-          </Button>
-          <Button
-            onClick={() => {
-              confirm('거부하였습니다.');
-              closeModal();
-            }}
-          >
-            아니오
-          </Button>
-        </div>
-      </Modal>
-    </>
+    <ModalOverlay isModalOpen={isOpen} closeModal={onCancel} title="Alerts!">
+      <p className="mb-4">정보 제공에 동의하십니까?</p>
+      <div className="flex justify-between">
+        <Button onClick={onConfirm}>예</Button>
+        <Button onClick={onCancel}>아니오</Button>
+      </div>
+    </ModalOverlay>
   );
 }
 
