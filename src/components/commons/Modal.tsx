@@ -1,6 +1,8 @@
 import { useRef, type ReactNode } from 'react';
 import Button from './Button';
 import { useOutsideClick } from '@hooks/useOutsideClick';
+import { useFocusModal } from '@hooks/useFocusModal';
+import { keyPress } from '@utils/keyPress';
 
 interface ModalProps {
   isModalOpen: boolean;
@@ -16,12 +18,25 @@ function Modal({ isModalOpen, closeModal, title, children }: ModalProps) {
     if (isModalOpen) closeModal();
   });
 
+  const { focusRef } = useFocusModal(isModalOpen);
+
   if (!isModalOpen) return;
 
   return (
     <>
       <div className="modal-overlay fixed inset-0 bg-black opacity-50" />
-      <div className="modal-container fixed inset-0 z-20 flex items-center justify-center">
+      <div
+        ref={focusRef}
+        tabIndex={-1}
+        className="modal-container fixed inset-0 z-20 flex items-center justify-center"
+        onKeyDown={keyPress({
+          onEnter: () => {
+            alert('확인되었습니다.');
+            closeModal();
+          },
+          onEscape: closeModal,
+        })}
+      >
         <div
           ref={modalRef}
           className="modal-body relative flex flex-col gap-4 rounded-xl bg-white p-6"
