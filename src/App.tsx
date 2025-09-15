@@ -1,19 +1,19 @@
 import ReviewModal from '@components/modals/ReviewModal';
 import ModalLayout from '@components/modals/ModalLayout';
-import Portal from '@components/common/Portal';
-import { useModal } from '@hooks/useModal';
+
+import { useModalActions, useModalState } from '@hooks/useModal';
 
 function App() {
-  const { isOpen } = useModal();
+  const { open, close } = useModalActions();
+  const { isOpen } = useModalState();
 
   return (
     <>
-      <ModalLayout />
-      {isOpen && (
-        <Portal title="review-modal">
-          <ReviewModal />
-        </Portal>
-      )}
+      <button onClick={open}>리뷰 모달 열기</button>
+
+      <ModalLayout title="review-modal">
+        {isOpen && <ReviewModal onClose={close} />}
+      </ModalLayout>
     </>
   );
 }

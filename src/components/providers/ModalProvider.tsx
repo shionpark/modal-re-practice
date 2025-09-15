@@ -1,23 +1,20 @@
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
-import { ModalContext } from '@hooks/useModal';
+import { StateCtx, ActionsCtx } from '@hooks/useModal';
 
 export function ModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setOpen] = useState(false);
+
   const open = useCallback(() => setOpen(true), []);
   const close = useCallback(() => setOpen(false), []);
 
-  const value = useMemo(
-    () => ({
-      isOpen,
-      open,
-      close,
-    }),
-    [isOpen, open, close]
-  );
+  const state = useMemo(() => ({ isOpen }), [isOpen]);
+  const actions = useMemo(() => ({ open, close }), [open, close]);
 
   return (
     <>
-      <ModalContext value={value}>{children}</ModalContext>
+      <StateCtx value={state}>
+        <ActionsCtx value={actions}>{children}</ActionsCtx>
+      </StateCtx>
     </>
   );
 }

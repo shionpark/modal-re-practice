@@ -1,15 +1,13 @@
 import { createContext, useContext } from 'react';
 
-type ModalContextType = {
-  isOpen: boolean;
-  open: () => void;
-  close: () => void;
-};
+type ModalState = { isOpen: boolean };
+type ModalActions = { open: () => void; close: () => void };
 
-export const ModalContext = createContext<ModalContextType | null>(null);
+export const StateCtx = createContext<ModalState>({ isOpen: false });
+export const ActionsCtx = createContext<ModalActions>({
+  open: () => {},
+  close: () => {},
+});
 
-export function useModal() {
-  const ctx = useContext(ModalContext);
-
-  return { ...ctx };
-}
+export const useModalState = () => useContext(StateCtx);
+export const useModalActions = () => useContext(ActionsCtx);

@@ -1,23 +1,33 @@
-import { useModal } from '@hooks/useModal';
+import Portal from '@components/common/Portal';
+import { useModalActions, useModalState } from '@hooks/useModal';
 
-function ModalLayout() {
-  const { open, close } = useModal();
+function ModalLayout({
+  children,
+  title,
+}: {
+  children: React.ReactNode;
+  title: string;
+}) {
+  const { close } = useModalActions();
+  const { isOpen } = useModalState();
+  if (!isOpen) return null;
 
   return (
-    <div className="flex gap-2">
-      <button
-        className="rounded-sm bg-gray-300 px-4 py-2 hover:bg-gray-200"
-        onClick={open}
+    <Portal title={title}>
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center"
+        role="dialog"
+        aria-modal="true"
       >
-        열기
-      </button>
-      <button
-        className="rounded-sm bg-gray-300 px-4 py-2 hover:bg-gray-200"
-        onClick={close}
-      >
-        닫기
-      </button>
-    </div>
+        <div className="absolute inset-0 bg-black/50" onClick={close} />
+        <div
+          className="relative rounded-xl bg-white p-6 shadow-lg"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {children}
+        </div>
+      </div>
+    </Portal>
   );
 }
 

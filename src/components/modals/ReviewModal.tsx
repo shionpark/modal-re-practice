@@ -1,6 +1,6 @@
 import StarRating from '@components/common/StarRating';
 
-function ReviewModal() {
+function ReviewModal({ onClose }: { onClose: () => void }) {
   return (
     <>
       <h2
@@ -48,7 +48,10 @@ function ReviewModal() {
           data-testid="modal-toolbar"
           className="flex justify-between gap-4"
         >
-          <button className="flex w-full items-center justify-center rounded-sm border border-gray-200 p-4 font-semibold">
+          <button
+            className="flex w-full items-center justify-center rounded-sm border border-gray-200 p-4 font-semibold"
+            onClick={onClose}
+          >
             취소
           </button>
           <button className="flex w-full items-center justify-center rounded-sm bg-gray-900 p-4 text-center font-semibold text-white">
