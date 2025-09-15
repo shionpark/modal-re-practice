@@ -1,8 +1,8 @@
-import star from '@assets/star.png';
+import StarRating from '@components/common/StarRating';
 
 function ReviewModal() {
   return (
-    <div className="flex h-[46rem] w-[36rem] flex-col overflow-auto rounded-md border border-gray-300 bg-white">
+    <>
       <h2
         data-testid="title"
         className="border border-transparent border-b-gray-300 py-6 text-center text-2xl font-bold text-gray-600"
@@ -24,13 +24,7 @@ function ReviewModal() {
           <span className="question block py-4 text-center text-lg font-semibold">
             상품은 만족하셨나요?
           </span>
-          <div className="flex items-center justify-center gap-3">
-            <img src={star} alt="star" className="w-12 grayscale" />
-            <img src={star} alt="star" className="w-12 grayscale" />
-            <img src={star} alt="star" className="w-12 grayscale" />
-            <img src={star} alt="star" className="w-12 grayscale" />
-            <img src={star} alt="star" className="w-12 grayscale" />
-          </div>
+          <StarRating />
         </section>
         <section data-testid="product-review">
           <label className="question block py-4 text-center text-lg font-semibold">
@@ -58,11 +52,11 @@ function ReviewModal() {
             취소
           </button>
           <button className="flex w-full items-center justify-center rounded-sm bg-gray-900 p-4 text-center font-semibold text-white">
-            등록
+            확인
           </button>
         </section>
       </div>
-    </div>
+    </>
   );
 }
 
